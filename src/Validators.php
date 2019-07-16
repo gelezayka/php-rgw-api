@@ -14,6 +14,7 @@ use MyENA\RGW\Validator\RequiredValidator;
 use MyENA\RGW\Validator\StringValidator;
 use MyENA\RGW\Validator\TenantNameValidator;
 use MyENA\RGW\Validator\UserCapabilityValidator;
+use MyENA\RGW\Validator\DateTimeValidator;
 
 /**
  * Class Validators
@@ -41,6 +42,8 @@ abstract class Validators
     private static $userCapability;
     /** @var \MyENA\RGW\Validator\BucketNameValidator */
     private static $bucketName;
+    /** @var \MyENA\RGW\Validator\DateTimeValidator */
+    private static $datetime;
 
     /**
      * @return \MyENA\RGW\Validator\RequiredValidator
@@ -133,6 +136,17 @@ abstract class Validators
             self::$tenantName = new TenantNameValidator();
         }
         return self::$tenantName;
+    }
+
+    /**
+     * @return \MyENA\RGW\Validator\DateTimeValidator
+     */
+    public static function DateTime(): DateTimeValidator
+    {
+        if (!isset(self::$datetime)) {
+            self::$datetime = new DateTimeValidator();
+        }
+        return self::$datetime;
     }
 
     /**
