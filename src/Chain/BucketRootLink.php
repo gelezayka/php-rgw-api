@@ -3,6 +3,7 @@
 namespace MyENA\RGW\Chain;
 
 use MyENA\RGW\AbstractLink;
+use MyENA\RGW\Chain\Bucket\Create;
 use MyENA\RGW\Chain\Bucket\Delete;
 use MyENA\RGW\Chain\Bucket\DeleteObject;
 use MyENA\RGW\Chain\Bucket\Index;
@@ -45,6 +46,15 @@ class BucketRootLink extends AbstractLink implements UriLink, HeaderLink
     public function List(?string $uid = null): ListBuckets
     {
         return ListBuckets::new($this, [ListBuckets::PARAM_UID => $uid]);
+    }
+
+    /**
+     * @param string $bucket
+     * @return \MyENA\RGW\Chain\Bucket\Create
+     */
+    public function Create(string $bucket): Create
+    {
+	return \MyENA\RGW\Chain\Bucket\Create::new($this, [Create::PARAM_BUCKET=>$bucket]);
     }
 
     /**

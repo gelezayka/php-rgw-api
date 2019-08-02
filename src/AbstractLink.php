@@ -201,10 +201,10 @@ abstract class AbstractLink implements LoggerAwareInterface
         $routeParams = [];
         $uri = '';
         foreach ($this->parents as $parent) {
-            if ($parent instanceof UriLink) {
+            if (($parent instanceof UriLink) && !($this instanceof \MyENA\RGW\Chain\Bucket\Create)) {
                 $uri = "{$uri}{$parent->getUriPart()}";
             }
-            if ($parent instanceof ParameterLink) {
+            if (($parent instanceof ParameterLink) && !($this instanceof \MyENA\RGW\Chain\Bucket\Create)) {
                 foreach ($parent->getParameters() as $parameter) {
                     if ($parameter->getLocation() === Parameter::IN_ROUTE) {
                         $routeParams[$parameter->getName()] = $parameter->getValue();
@@ -212,13 +212,13 @@ abstract class AbstractLink implements LoggerAwareInterface
                 }
             }
         }
-        if ($this instanceof UriLink) {
+        if (($this instanceof UriLink) || ($this instanceof \MyENA\RGW\Chain\Bucket\Create)) {
             $uri = "{$uri}{$this->getUriPart()}";
         }
         if ('' === $uri) {
             throw $this->createInvalidChainException('UriLink');
         }
-        if ($this instanceof ParameterLink) {
+        if (($this instanceof ParameterLink) && !($this instanceof \MyENA\RGW\Chain\Bucket\Create)) {
             foreach ($this->getParameters() as $parameter) {
                 if ($parameter->getLocation() === Parameter::IN_ROUTE) {
                     $routeParams[$parameter->getName()] = $parameter->getValue();
