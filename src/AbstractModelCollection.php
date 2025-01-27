@@ -18,6 +18,9 @@ abstract class AbstractModelCollection extends AbstractModel implements \Iterato
     public function __construct(array $data = [])
     {
         $class = $this->containedType();
+        if (count(array_filter(array_keys($data), 'is_string')) > 0) {
+            $data = [$data];
+        }
         foreach ($data as $datum) {
             $this->data[] = new $class($datum);
         }
